@@ -1,7 +1,10 @@
+const gameController = require('./gameController');
 
 async function start(){
     try{
-       console.log("proyecto en marcha")
+        const superheroes = await gameController.StartGame();
+        const winner = await gameController.BattleDevelopment(superheroes);
+
     }catch{
 
     }
