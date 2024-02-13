@@ -3,7 +3,8 @@ const gameController = require('./gameController');
 async function start(){
     try{
         const superheroes = await gameController.StartGame();
-        gameController.BattleDevelopment(superheroes);
+        const fighters = gameController.BattleDevelopment(superheroes);
+        gameController.EndGame(fighters);
 
     }catch{
 

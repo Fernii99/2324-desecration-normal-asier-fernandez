@@ -51,6 +51,7 @@ async function BattleDevelopment(superheroes){
             const damage = await Battle.Attack( turn === 'superhero' ? superhero : junkpile, turn === 'superhero' ? superhero : junkpile );
             turn = await Battle.Damage(turn === 'superhero' ? junkpile : superhero, damage);
             turn = turn === 'superhero' ? 'junkpile' : 'superhero';
+            
             console.log("-----------------------------------");
             console.log("ESTADISTICAS DE SUPERHERO");
             console.log(superhero)
@@ -58,16 +59,26 @@ async function BattleDevelopment(superheroes){
             console.log("ESTADISTICAS DE JUNKPILE");
             console.log(junkpile)
        }
-
-       
-    
-      
-
    }
 
-  
-   
-
+   return {junkpile, superhero}
+}
+/*******************************************
+       FUNTION THAT MAKES THE BATTLE UNTILL SOMEONES HP IS 0 OR LESS
+       * CHECKS IF IS SUCCESSFUL OR NOT
+       * THE DAMAGE THAT IS GOING TO BE DEALT, 
+       * CHANGES THE TURN
+********************************************/
+function EndGame(fighters){
+    const junkpile = fighters.junkpile;
+    const superhero = fighters.superhero;
+    
+    if(junkpile.HP > 0){
+        console.log("-------------------------------------")
+        console.log(superhero.name + " Ha sido derrotado");
+    }
+        console.log("-------------------------------------")
+        console.log(junkpile.name + " Ha sido derrotado");
 }
 
 
@@ -132,5 +143,6 @@ function RetrieveSuperhero(superheroes){
 
 module.exports = {
     StartGame,
-    BattleDevelopment
+    BattleDevelopment,
+    EndGame
 }
