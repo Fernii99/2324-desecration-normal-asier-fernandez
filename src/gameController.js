@@ -24,33 +24,47 @@ async function StartGame(){
     return {junkpile, superhero}
 }
 
+
+/*******************************************
+       FUNTION THAT MAKES THE BATTLE UNTILL SOMEONES HP IS 0 OR LESS
+       * CHECKS IF IS SUCCESSFUL OR NOT
+       * THE DAMAGE THAT IS GOING TO BE DEALT, 
+       * CHANGES THE TURN
+********************************************/
 async function BattleDevelopment(superheroes){
 
     let junkpile = superheroes.junkpile;
     let superhero = superheroes.superhero;
 
     let turn = await Battle.Start(junkpile, superhero);
+    console.log("--------------------------------");
+    console.log(" El primer golpe es para"+ turn)
 
-   while( junkpile.HP > 0 || superhero.HP > 0 ){
+   while( junkpile.HP >= 0 && superhero.HP >= 0 ){
        let successfullAttack =  turn === 'superhero' ? Battle.SuccessfullAttack(superhero) : Battle.SuccessfullAttack(junkpile) ;
+       
        if(!successfullAttack){
+        console.log("--------------------------------");
+        console.log("El golpe de:  "+ turn + "No ha sido exitoso, cambio de turno")
         turn = turn === 'superhero' ? 'junkpile' : 'superhero';
+
        }else{
-            Battle.Attack( turn === 'superhero' ? superhero : junkpile );
-            Battle.Damage(turn === 'superhero' ? junkpile : superhero, damage);
+            const damage = await Battle.Attack( turn === 'superhero' ? superhero : junkpile, turn === 'superhero' ? superhero : junkpile );
+            turn = await Battle.Damage(turn === 'superhero' ? junkpile : superhero, damage);
             turn = turn === 'superhero' ? 'junkpile' : 'superhero';
-        console.log(turn)
+            
+            console.log("ESTADISTICAS DE JUNKPILE");
+            console.log(turn)
        }
+
+       
+    
+      
+
    }
 
-   console.log(whoStarts);
-    // const junkpile = superheroes.junkpile;
-    // const superhero = superheroes.superhero;
   
-    // const jpInitiative = calculateInitiative(junkpile.INT, junkpile.COM)
-    // const shInitiative = calculateInitiative(superhero.INT, superhero.COM)
-
-    // console.log(shInitiative)
+   
 
 }
 
