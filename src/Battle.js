@@ -7,9 +7,9 @@ function Start(junkpile, superhero){
     const junkpileInitiative = junkpile.INT + junkpile.COM;
     const superheroInitiative = superhero.INT + superhero.COM;
     if(junkpileInitiative > superheroInitiative ){
-        return "junkpile";
+        return junkpile;
     }else{
-        return "superhero";
+        return superhero;
     }
 }
 
@@ -22,10 +22,10 @@ function SuccessfullAttack(attacker){
     const randomNumber = Math.floor(Math.random() * 100 - 0) + 0;
     
     if(randomNumber <= attacker.COM ){
-        console.log("El ataque de " + attacker.name + " ha sido exitoso")
         return true;
     }else{
-        console.log("El ataque de " + attacker.name + " no ha sido exitoso")
+        console.log("--------------------------------");
+        console.log("El golpe de:  "+ attacker.name + " rsNo ha sido exitoso, cambio de turno")
         return false;
     }
 }
@@ -61,15 +61,19 @@ function Damage(defender, damage) {
        IN CASE THE DICE THROW FOR THE ATTACK IS FUMBLE
 ********************************************/
 function Fumble(spe, dice){
+    
     let resultofdices = 0;
-    if(dice === 1){
+    if(dice = 2){
         for(let i = 1; i <= 4; i++ ){
-           resultofdices += Math.floor((Math.random() * 4 - 1) + 1);
+            resultofdices = resultofdices + Math.floor((Math.random() * 4 - 1) + 1);
         }
-        return spe / resultofdices;
+        
+        console.log("-----------------------------------");
+        console.log("Se ha herido a si mismo por un total de: " + (spe / resultofdices).toFixed(0))
+
+        return (spe / resultofdices).toFixed(0);
     }
         return Math.floor( spe / Math.floor(Math.random() * 4 - 1) + 1);
-    
 }
 
  /*******************************************

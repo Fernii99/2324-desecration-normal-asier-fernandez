@@ -38,23 +38,25 @@ async function BattleDevelopment(superheroes){
 
     let turn = await Battle.Start(junkpile, superhero);
     console.log("--------------------------------");
-    console.log(" El primer golpe es para"+ turn)
+    console.log(" El primer golpe es para " + turn.name)
 
    while( junkpile.HP >= 0 && superhero.HP >= 0 ){
        let successfullAttack =  turn === 'superhero' ? Battle.SuccessfullAttack(superhero) : Battle.SuccessfullAttack(junkpile) ;
        
        if(!successfullAttack){
-        console.log("--------------------------------");
-        console.log("El golpe de:  "+ turn + "No ha sido exitoso, cambio de turno")
         turn = turn === 'superhero' ? 'junkpile' : 'superhero';
 
        }else{
+
             const damage = await Battle.Attack( turn === 'superhero' ? superhero : junkpile, turn === 'superhero' ? superhero : junkpile );
             turn = await Battle.Damage(turn === 'superhero' ? junkpile : superhero, damage);
             turn = turn === 'superhero' ? 'junkpile' : 'superhero';
-            
+            console.log("-----------------------------------");
+            console.log("ESTADISTICAS DE SUPERHERO");
+            console.log(superhero)
+            console.log("-----------------------------------");
             console.log("ESTADISTICAS DE JUNKPILE");
-            console.log(turn)
+            console.log(junkpile)
        }
 
        
