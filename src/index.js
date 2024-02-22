@@ -2,10 +2,17 @@ const gameController = require('./gameController');
 
 async function start(){
     try{
-        const superheroes = await gameController.StartGame();
-        const fighters = gameController.BattleDevelopment(superheroes);
-        gameController.EndGame(fighters);
+        console.log("WELCOME TO THE COMBAT ARENA !")
+        console.log(`---------------------------------------`)
 
+        const superheroes = await gameController.StartGame();
+
+        console.log("LISTADO DE ATRIBUTOS");
+        console.log("----------------------------------------");
+        console.log(superheroes);
+
+        const fighters = await gameController.BattleDevelopment(superheroes);
+        await gameController.EndGame(fighters);
     }catch{
 
     }

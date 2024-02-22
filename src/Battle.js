@@ -22,10 +22,12 @@ function SuccessfullAttack(attacker){
     const randomNumber = Math.floor(Math.random() * 100 - 0) + 0;
     
     if(randomNumber <= attacker.COM ){
+        console.log("--------------------------------");
+        console.log( attacker.name + " Obtiene un " + randomNumber + " y ataca con exito")
         return true;
     }else{
         console.log("--------------------------------");
-        console.log("El golpe de:  "+ attacker.name + " rsNo ha sido exitoso, cambio de turno")
+        console.log(attacker.name + " Obtiene un " + randomNumber + " y el ataque no es exitoso, CAMBIO DE TURNO")
         return false;
     }
 }
@@ -35,14 +37,11 @@ function SuccessfullAttack(attacker){
 function Attack(attacker) {
     const dice = Math.floor(Math.random() * 20 - 1) + 1;
     if(dice < 3){
-        console.log("la tirada de dado de:  " + attacker.name + " Ha sido una pifia");
-        return Fumble(attacker.SPE, dice);
+        return Fumble(attacker, attacker.SPE, dice);
     }else if(dice > 2 && dice < 18){
-        console.log("la tirada de dado de: " + attacker.name + " Ha sido normal");
-        return Normal(attacker.POW, attacker.STR, dice );
+        return Normal(attacker, attacker.POW, attacker.STR, dice );
     }else{
-        console.log("la tirada de dado de: " + attacker.name + " Ha sido Critico!");
-        return Critic(attacker.INT, attacker.DUR, dice);
+        return Critic(attacker, attacker.INT, attacker.DUR, dice);
     }
 }
 
@@ -51,8 +50,9 @@ function Attack(attacker) {
        FUNTION THAT REDUCES THE HP OF THE DEFENDER HERO WITH THE VALUE OF THE ATTACKERS DAMAGE
 ********************************************/
 function Damage(defender, damage) {
-    console.log("La vida de " + defender.name + " ha bajado " + damage + " puntos " );
-    defender.HP -= damage;
+
+    // console.log("La vida de " + defender.name + " ha bajado " + damage + " puntos " );
+    defender.HP = defender.HP - damage;
     return defender;
     
 }
@@ -60,8 +60,7 @@ function Damage(defender, damage) {
  /*******************************************
        IN CASE THE DICE THROW FOR THE ATTACK IS FUMBLE
 ********************************************/
-function Fumble(spe, dice){
-    
+function Fumble(attacker, spe, dice){
     let resultofdices = 0;
     if(dice = 2){
         for(let i = 1; i <= 4; i++ ){
@@ -69,37 +68,49 @@ function Fumble(spe, dice){
         }
         
         console.log("-----------------------------------");
-        console.log("Se ha herido a si mismo por un total de: " + (spe / resultofdices).toFixed(0))
-
-        return (spe / resultofdices).toFixed(0);
+        console.log(`FAIL!! ${attacker.name} obtiene un ${dice} y se clava el arma en su pierna izda. Recibe un daño de ${(spe / resultofdices).toFixed(0)}  `)
+        attacker.HP = attacker.HP - (spe / resultofdices).toFixed(0);
+        return 0;
+    }else{
+        console.log(`FAIL!! ${attacker.name} obtiene un ${dice} y se clava el arma en su pierna izda. Recibe un daño de ${(spe / resultofdices).toFixed(0)}  `)
+        attacker.HP = Math.floor( spe / Math.floor(Math.random() * 4 - 1) + 1);
+        return 0;
     }
-        return Math.floor( spe / Math.floor(Math.random() * 4 - 1) + 1);
+       
+       
 }
 
  /*******************************************
     FUNCTION OF THE DICE THROW FOR ATACK IS NORMAL
     ********************************************/
-function Normal(pow, str, dice){
-    return Math.floor((pow + str) * dice / 100); 
+function Normal(attacker, pow, str, dice){
+    console.log( `${attacker.name} obtiene un ${dice}, empuña su arma y ejerce un daño de ${ Math.floor((pow + str) * dice / 100) }`)
+    return  Math.floor((pow + str) * dice / 100);
 }
 
  /*******************************************
        IN CASE THE DICE THROW FOR THE ATTACK IS CRITIC
 ********************************************/
-function Critic(int, dur, dice){
+function Critic(attacker, int, dur, dice){
     let resultofdices = 0;
     if(dice === 18){
+        console.log(`CRITICAL HIT!! ${attacker.name} obtiene un ${dice} y ejerce un daño de ${Math.floor((int * dur) / 100) * Math.floor(Math.random() * 3 - 1) + 1}`)
         return  Math.floor((int * dur) / 100) * Math.floor(Math.random() * 3 - 1) + 1;
     }else if(dice === 19){
+
             for(let i = 1; i <= 2; i++ ){
                resultofdices += Math.floor(Math.random() * 3 - 1) + 1;
             }
+
+            console.log(`CRITICAL HIT!! ${attacker.name} obtiene un ${dice} y ejerce un daño de ${Math.floor((int * dur) / 100) * resultofdices}`)
             return Math.floor((int * dur) / 100) * resultofdices;
     }else{
         for(let i = 1; i <= 2; i++ ){
             resultofdices += Math.floor(Math.random() * 3 - 1) + 1;
         }
-         return Math.floor((int * dur) / 100) * resultofdices;
+
+        console.log(`CRITICAL HIT!! ${attacker.name} obtiene un ${dice} y ejerce un daño de ${Math.floor((int * dur) / 100) * resultofdices}`)
+        return Math.floor((int * dur) / 100) * resultofdices;
     }
 }
 

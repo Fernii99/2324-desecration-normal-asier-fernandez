@@ -9,18 +9,21 @@ async function StartGame(){
     /*******************************************
        Retrieve all superheroes
     ********************************************/
-    const superheroes = await gameService.getHeroData();
+        const superheroes = await gameService.getHeroData();
 
     /*******************************************
        Find junkpile information 
     ********************************************/
-       const junkpile = RetrieveJunkpile(superheroes)
+        const junkpile = RetrieveJunkpile(superheroes)
 
     /*******************************************
        Find a superhero data to fight Junkpile 
     *******************************************/
         const superhero = RetrieveSuperhero(superheroes)
     
+        console.log(`Hoy combatiran ${junkpile.name} contra ${superhero.name}`)
+        console.log(`---------------------------------------`)
+
     return {junkpile, superhero}
 }
 
@@ -38,28 +41,32 @@ async function BattleDevelopment(superheroes){
 
     let turn = await Battle.Start(junkpile, superhero);
     console.log("--------------------------------");
-    console.log(" El primer golpe es para " + turn.name)
+    console.log(" El primer asalto es para " + turn.name)
+
+    let AssaultTurn = 1;
 
    while( junkpile.HP >= 0 && superhero.HP >= 0 ){
-       let successfullAttack =  turn === 'superhero' ? Battle.SuccessfullAttack(superhero) : Battle.SuccessfullAttack(junkpile) ;
-       
+    console.log("----------------------------------")
+        console.log("Asalto numero " +  AssaultTurn)
+        let successfullAttack =  turn === 'superhero' ? Battle.SuccessfullAttack(superhero) : Battle.SuccessfullAttack(junkpile) ;
        if(!successfullAttack){
         turn = turn === 'superhero' ? 'junkpile' : 'superhero';
+        AssaultTurn = AssaultTurn + 1;
 
        }else{
-
-            const damage = await Battle.Attack( turn === 'superhero' ? superhero : junkpile, turn === 'superhero' ? superhero : junkpile );
-            turn = await Battle.Damage(turn === 'superhero' ? junkpile : superhero, damage);
+            const damage = await Battle.Attack( turn === 'superhero' ? superhero : junkpile );
+            turn = await Battle.Damage(turn === 'superhero' ? junkpile : superhero, damage );
+            
             turn = turn === 'superhero' ? 'junkpile' : 'superhero';
             
             console.log("-----------------------------------");
-            console.log("ESTADISTICAS DE SUPERHERO");
             console.log(superhero)
-            console.log("-----------------------------------");
-            console.log("ESTADISTICAS DE JUNKPILE");
             console.log(junkpile)
+
+            AssaultTurn = AssaultTurn + 1;
        }
    }
+
 
    return {junkpile, superhero}
 }
@@ -76,9 +83,11 @@ function EndGame(fighters){
     if(junkpile.HP > 0){
         console.log("-------------------------------------")
         console.log(superhero.name + " Ha sido derrotado");
-    }
+    }else{
         console.log("-------------------------------------")
         console.log(junkpile.name + " Ha sido derrotado");
+    }
+        
 }
 
 
